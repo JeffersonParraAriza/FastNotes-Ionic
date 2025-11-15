@@ -29,3 +29,9 @@ node -v
 npm -v
 ionic -v
 git --version
+
+## Para ejecutar el proyecto
+ionic serve
+
+## Para crear un nuevo componente 
+ionic generate page TestComponentsIonic
