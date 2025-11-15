@@ -1,5 +1,7 @@
 {
   "name": "HolaMundo",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular-standalone"
 }
