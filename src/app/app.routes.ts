@@ -10,4 +10,12 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
+  {
+    path: 'acerca-de',
+    loadComponent: () => import('./acerca-de/acerca-de.page').then( m => m.AcercaDePage)
+  },
+  {
+    path: 'test-components-ionic',
+    loadComponent: () => import('./test-components-ionic/test-components-ionic.page').then( m => m.TestComponentsIonicPage)
+  },
 ];
