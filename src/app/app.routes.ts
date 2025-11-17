@@ -11,11 +11,19 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'acerca-de',
-    loadComponent: () => import('./acerca-de/acerca-de.page').then( m => m.AcercaDePage)
+    path: 'create-edit',
+    loadComponent: () => import('./create-edit/create-edit.page').then( m => m.CreateEditPage)
   },
   {
-    path: 'test-components-ionic',
-    loadComponent: () => import('./test-components-ionic/test-components-ionic.page').then( m => m.TestComponentsIonicPage)
+    path: 'detail',
+    loadComponent: () => import('./detail/detail.page').then( m => m.DetailPage)
+  },
+  {
+    path: 'modal-confirm',
+    loadComponent: () => import('./modal-confirm/modal-confirm.page').then( m => m.ModalConfirmPage)
+  },
+  {
+    path: 'empty-state',
+    loadComponent: () => import('./empty-state/empty-state.page').then( m => m.EmptyStatePage)
   },
 ];
