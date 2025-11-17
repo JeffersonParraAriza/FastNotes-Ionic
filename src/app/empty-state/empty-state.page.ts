@@ -1,20 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+import {
+  IonHeader, IonToolbar, IonTitle, IonContent,
+  IonButton
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-empty-state',
   templateUrl: './empty-state.page.html',
   styleUrls: ['./empty-state.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    IonHeader, IonToolbar, IonTitle, IonContent,
+    IonButton
+  ]
 })
-export class EmptyStatePage implements OnInit {
+export class EmptyStatePage {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  ngOnInit() {
+  createNote() {
+    this.router.navigate(['/create-edit']);
   }
 
 }

@@ -1,13 +1,20 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>empty-state</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>FastNotes</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">empty-state</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <div class="empty-container">
+
+    <h2>No tienes notas aún</h2>
+    <p>Crea tu primera nota para comenzar a organizar tus ideas.</p>
+
+    <ion-button expand="block" color="success" (click)="createNote()">
+      Crear nota
+    </ion-button>
+
+  </div>
+
 </ion-content>
