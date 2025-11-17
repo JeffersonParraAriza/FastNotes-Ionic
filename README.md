@@ -30,11 +30,14 @@ npm -v
 ionic -v
 git --version
 
+## Para instalar las dependencias del proyecto
+npm install
+
 ##  Para ejecutar el proyecto
 ionic serve
 
 ## Para crear un nuevo componente 
 ionic generate page TestComponentsIonic
 
-Documentacion de los componentes
+## Documentacion de los componentes
 https://ionicframework.com/docs/components
