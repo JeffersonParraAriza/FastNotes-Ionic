@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import {
@@ -22,11 +22,9 @@ export class ModalConfirmPage implements OnInit {
 
   noteId!: number;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private notesService: NotesService
-  ) { }
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly notesService = inject(NotesService);
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {

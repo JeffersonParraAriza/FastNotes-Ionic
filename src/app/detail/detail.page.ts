@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
-  IonButton, IonItem, IonLabel
+  IonButton, IonItem, IonLabel, IonBadge
 } from '@ionic/angular/standalone';
 import { NotesService, Note } from '../services/notes.service';
 import { CommonModule } from '@angular/common';
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
-    IonItem, IonLabel, IonButton,
+    IonItem, IonLabel, IonButton, IonBadge
   ]
 })
 export class DetailPage implements OnInit {
@@ -23,11 +23,9 @@ export class DetailPage implements OnInit {
   noteId!: number;
   note: Note | undefined;
 
-  constructor(
-    private route: ActivatedRoute,
-    private notesService: NotesService,
-    private router: Router
-  ) { }
+  private readonly route = inject(ActivatedRoute);
+  private readonly notesService = inject(NotesService);
+  private readonly router = inject(Router);
 
   async ngOnInit() {
     this.route.params.subscribe(async params => {

@@ -2,24 +2,146 @@
   <ion-toolbar color="primary">
     <ion-title>FastNotes</ion-title>
   </ion-toolbar>
+
+  <ion-toolbar *ngIf="!showForm">
+    <!-- RF005 – Buscar notas por texto (dinámico) -->
+    <ion-searchbar
+      placeholder="Buscar por título, contenido o etiqueta"
+      [value]="searchTerm"
+      (ionInput)="onSearchChange($event)">
+    </ion-searchbar>
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="!showForm && categories.length">
+    <!-- RF006/RF008 – Filtrar notas por categoría -->
+    <ion-title size="small">Filtrar por categoría</ion-title>
+    <ion-segment
+      scrollable="true"
+      [value]="selectedCategory"
+      (ionChange)="onCategoryChange($event)">
+      <ion-segment-button value="">
+        <ion-label>Todas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button *ngFor="let category of categories" [value]="category">
+        <ion-label>{{ category }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="!showForm && availableTags.length">
+    <!-- RF007 – Crear categorías/etiquetas (selección de etiquetas) -->
+    <ion-title size="small">Filtrar por etiquetas</ion-title>
+    <div class="tags-filter">
+      <ion-chip
+        outline="true"
+        color="primary"
+        [class.active]="selectedTags.length === 0"
+        (click)="clearTagFilters()">
+        Todas
+      </ion-chip>
+      <ion-chip
+        *ngFor="let tag of availableTags"
+        [class.active]="selectedTags.includes(tag)"
+        (click)="toggleTagSelection(tag)">
+        {{ tag }}
+      </ion-chip>
+    </div>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<!-- Vista LISTA -->
+<ion-content *ngIf="!showForm">
+  <ng-container *ngIf="filteredNotes && filteredNotes.length; else emptyState">
+    <!-- RF009 – Lista ordenada correspondiente al servicio -->
+    <ion-list>
+      <ion-item
+        button
+        detail="true"
+        *ngFor="let note of filteredNotes"
+        (click)="startEdit(note)">
+        <ion-label>
+          <h2>{{ note.title }}</h2>
+          <p *ngIf="note.content">
+            {{ note.content.length > 80 ? (note.content | slice:0:80) + '…' : note.content }}
+          </p>
+          <small>
+            {{ note.createdAt | date:'short' }}
+          </small>
+          <div class="tags" *ngIf="note.tags?.length">
+            <ion-badge color="medium" *ngFor="let tag of note.tags">{{ tag }}</ion-badge>
+          </div>
+        </ion-label>
+        <ion-badge slot="end" *ngIf="note.category">{{ note.category }}</ion-badge>
+      </ion-item>
+    </ion-list>
+  </ng-container>
 
-  <ion-list *ngIf="notes.length > 0">
-    <ion-item button detail="true" *ngFor="let note of notes" (click)="goToDetail(note)">
-      <ion-label>
-        <h2>{{ note.title }}</h2>
-        <p>{{ note.content }}</p>
-        <small>{{ note.date }}</small>
-      </ion-label>
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <p>No hay notas todavía.</p>
+      <ion-button (click)="startCreate()">Crear nota</ion-button>
+    </div>
+  </ng-template>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="startCreate()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<!-- RF001/RF002 – Formulario crear/editar -->
+<ion-content *ngIf="showForm" class="ion-padding">
+  <ion-list lines="full">
+    <ion-item>
+      <ion-label position="stacked">Título *</ion-label>
+      <ion-input
+        [(ngModel)]="formTitle"
+        placeholder="Escribe el título de la nota">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Contenido</ion-label>
+      <ion-textarea
+        [(ngModel)]="formContent"
+        [autoGrow]="true"
+        placeholder="Detalle de la nota (opcional)">
+      </ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Categoría</ion-label>
+      <ion-input
+        [(ngModel)]="formCategory"
+        placeholder="Ej: Personal, Trabajo, Estudio">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Etiquetas</ion-label>
+      <ion-input
+        [(ngModel)]="formTagsInput"
+        placeholder="Separa las etiquetas con coma">
+      </ion-input>
     </ion-item>
   </ion-list>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="success" (click)="createNote()">
-      +
-    </ion-fab-button>
-  </ion-fab>
+  <div class="form-actions">
+    <ion-button expand="block" color="success" (click)="saveNote()">
+      Guardar
+    </ion-button>
 
+    <ion-button fill="clear" color="medium" expand="block" (click)="cancelEdit()">
+      Cancelar
+    </ion-button>
+
+    <ion-button
+      *ngIf="editingNote"
+      expand="block"
+      color="danger"
+      (click)="confirmDelete()">
+      Eliminar nota
+    </ion-button>
+  </div>
 </ion-content>

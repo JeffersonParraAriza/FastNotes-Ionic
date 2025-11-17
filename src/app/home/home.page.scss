@@ -25,3 +25,37 @@
 #container a {
   text-decoration: none;
 }
+
+.empty-state {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.empty-state p {
+  margin-bottom: 1rem;
+  color: var(--ion-color-medium);
+}
+
+.form-actions {
+  padding: 1rem;
+}
+
+.tags-filter {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  overflow-x: auto;
+}
+
+.tags-filter ion-chip {
+  --background: var(--ion-color-medium, #92949c);
+  --color: #fff;
+  border-radius: 20px;
+  transition: all 0.2s ease-in-out;
+}
+
+.tags-filter ion-chip.active {
+  --background: transparent;
+  --color: var(--ion-color-primary);
+  border: 1px solid var(--ion-color-primary);
+}

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonItem, IonInput, IonButton, IonLabel
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotesService, Note } from '../services/notes.service';
+import { NotesService } from '../services/notes.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -24,13 +24,13 @@ export class CreateEditPage implements OnInit {
   id: number | null = null;
   title = '';
   content = '';
+  category = '';
+  tagsInput = '';
   isEditing = false;
 
-  constructor(
-    private route: ActivatedRoute,
-    private notesService: NotesService,
-    private router: Router
-  ) { }
+  private readonly route = inject(ActivatedRoute);
+  private readonly notesService = inject(NotesService);
+  private readonly router = inject(Router);
 
   async ngOnInit() {
     this.route.params.subscribe(async params => {
@@ -42,6 +42,8 @@ export class CreateEditPage implements OnInit {
         if (note) {
           this.title = note.title;
           this.content = note.content;
+          this.category = note.category ?? '';
+          this.tagsInput = (note.tags ?? []).join(', ');
         }
       }
     });
@@ -53,33 +55,22 @@ export class CreateEditPage implements OnInit {
       return;
     }
 
-    if (this.isEditing && this.id !== null) {
-      const notes = await this.notesService.getNotes();
-      const index = notes.findIndex(n => n.id === this.id);
-
-      if (index !== -1) {
-        notes[index] = {
-          id: this.id,
-          title: this.title,
-          content: this.content,
-          date: new Date().toLocaleString()
-        };
-
-        await this.notesService.saveNotes(notes);
-      }
-
-    } else {
-      const newNote: Note = {
-        id: Date.now(),
-        title: this.title,
-        content: this.content,
-        date: new Date().toLocaleString()
-      };
-
-      await this.notesService.addNote(newNote);
-    }
+    await this.notesService.upsert({
+      id: this.isEditing ? this.id ?? undefined : undefined,
+      title: this.title.trim(),
+      content: this.content,
+      category: this.category.trim(),
+      tags: this.parseTags(this.tagsInput)
+    });
 
     this.router.navigate(['/home']);
+  }
+
+  private parseTags(value: string): string[] {
+    return value
+      .split(',')
+      .map(tag => tag.trim())
+      .filter(tag => tag.length > 0);
   }
 
 }

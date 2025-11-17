@@ -18,6 +18,16 @@
     <ion-input [(ngModel)]="content"></ion-input>
   </ion-item>
 
+  <ion-item>
+    <ion-label position="floating">Categoría (opcional)</ion-label>
+    <ion-input [(ngModel)]="category"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Etiquetas (separa con comas)</ion-label>
+    <ion-input [(ngModel)]="tagsInput"></ion-input>
+  </ion-item>
+
   <ion-button expand="block" color="success" (click)="saveNote()">
     {{ isEditing ? 'Guardar Cambios' : 'Crear Nota' }}
   </ion-button>

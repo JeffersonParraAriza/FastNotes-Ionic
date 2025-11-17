@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import {
@@ -18,7 +18,7 @@ import {
 })
 export class EmptyStatePage {
 
-  constructor(private router: Router) { }
+  private readonly router = inject(Router);
 
   createNote() {
     this.router.navigate(['/create-edit']);

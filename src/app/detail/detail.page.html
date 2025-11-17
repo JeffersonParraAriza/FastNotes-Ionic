@@ -10,7 +10,21 @@
 
     <h2>{{ note?.title }}</h2>
     <p>{{ note?.content }}</p>
-    <p><em>{{ note?.date }}</em></p>
+
+    <ion-item lines="none">
+      <ion-label>
+        <p><strong>Categoría:</strong> {{ note?.category || 'Sin categoría' }}</p>
+        <p><strong>Creada:</strong> {{ note?.createdAt | date:'medium' }}</p>
+        <p><strong>Actualizada:</strong> {{ note?.updatedAt | date:'medium' }}</p>
+      </ion-label>
+    </ion-item>
+
+    <div *ngIf="note?.tags?.length">
+      <strong>Etiquetas:</strong>
+      <div class="tags">
+        <ion-badge color="medium" *ngFor="let tag of note?.tags">{{ tag }}</ion-badge>
+      </div>
+    </div>
 
     <ion-button expand="block" color="success" (click)="editNote()">
       Editar
