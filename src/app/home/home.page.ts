@@ -39,9 +39,6 @@ export class HomePage implements OnInit {
 
   async loadNotes() {
     this.notes = await this.notesService.getNotes();
-
-    console.log("NOTES FOUND:", this.notes);
-
     if (this.notes.length === 0) {
       this.router.navigate(['/empty-state']);
     }

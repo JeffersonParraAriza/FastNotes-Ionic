@@ -32,9 +32,7 @@ export class DetailPage implements OnInit {
   async ngOnInit() {
     this.route.params.subscribe(async params => {
       this.noteId = Number(params['id']);
-      console.log('TEST DetailPage this.noteId: ',this.noteId);
       this.note = await this.notesService.getNote(this.noteId);
-      console.log(this.note);
     });
   }
 

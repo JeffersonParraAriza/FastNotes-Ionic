@@ -31,7 +31,6 @@ export class ModalConfirmPage implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.noteId = Number(params['id']);
-      console.log("ModalConfirm - Note ID:", this.noteId);
     });
   }
 
