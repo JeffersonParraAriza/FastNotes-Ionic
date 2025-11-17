@@ -24,29 +24,45 @@ export class NotesService {
     this._storage = storage;
   }
 
+
   async getNotes(): Promise<Note[]> {
-    return (await this._storage?.get(this.NOTES_KEY)) || [];
+    await this.initStorage();
+    const notes = await this._storage?.get(this.NOTES_KEY);
+    return notes || [];
   }
 
   async saveNotes(notes: Note[]) {
+    await this.initStorage();
     await this._storage?.set(this.NOTES_KEY, notes);
   }
 
+
   async addNote(note: Note) {
+    await this.initStorage();
     const notes = await this.getNotes();
     notes.push(note);
-    await this.saveNotes(notes);
+    await this._storage?.set(this.NOTES_KEY, notes);
   }
 
+
   async getNote(id: number): Promise<Note | undefined> {
+    await this.initStorage();
     const notes = await this.getNotes();
-    return notes.find(n => n.id === id);
+    return notes.find(note => note.id === id);
   }
+
 
   async deleteNote(id: number) {
     let notes = await this.getNotes();
     notes = notes.filter(n => n.id !== id);
     await this.saveNotes(notes);
   }
+
+  private async initStorage() {
+    if (!this._storage) {
+      this._storage = await this.storage.create();
+    }
+  }
+
 
 }

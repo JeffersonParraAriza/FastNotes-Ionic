@@ -1,13 +1,34 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>detail</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Detalle de Nota</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <ng-container *ngIf="note; else notFound">
+
+    <h2>{{ note?.title }}</h2>
+    <p>{{ note?.content }}</p>
+    <p><em>{{ note?.date }}</em></p>
+
+    <ion-button expand="block" color="success" (click)="editNote()">
+      Editar
+    </ion-button>
+
+    <ion-button expand="block" color="danger" (click)="deleteNote()">
+      Eliminar
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" (click)="goBack()">
+      Volver
+    </ion-button>
+
+  </ng-container>
+
+  <ng-template #notFound>
+    <p>No se encontró la nota.</p>
+    <ion-button expand="block" (click)="goBack()">Volver</ion-button>
+  </ng-template>
+
 </ion-content>

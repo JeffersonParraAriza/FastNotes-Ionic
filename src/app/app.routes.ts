@@ -19,7 +19,7 @@ export const routes: Routes = [
     loadComponent: () => import('./create-edit/create-edit.page').then(m => m.CreateEditPage)
   },
   {
-    path: 'detail',
+    path: 'detail/:id',
     loadComponent: () => import('./detail/detail.page').then(m => m.DetailPage)
   },
   {
