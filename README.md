@@ -1,4 +1,4 @@
-# 🚀 HolaMundo – Aplicación Ionic + Angular
+# 🚀 FastNotes – Aplicación Ionic + Angular
 
 Este proyecto es una **aplicación base desarrollada con Ionic y Angular**, creada como práctica inicial para comprobar la correcta instalación y configuración del entorno de desarrollo híbrido.  
 La aplicación muestra un sencillo mensaje de bienvenida y un botón interactivo que despliega un *toast* con un saludo.
