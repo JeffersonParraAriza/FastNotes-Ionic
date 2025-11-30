@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 export interface Note {
   id: number;
@@ -20,10 +21,25 @@ export class NotesService {
   // RF009 – Ordenar notas por fecha
   private readonly storage = inject(Storage);
   private _storage: Storage | null = null;
+  private sqliteDriverDefined = false;
   private readonly NOTES_KEY = 'notes';
+
+  private async ensureSQLiteDriver(): Promise<void> {
+    if (this.sqliteDriverDefined) {
+      return;
+    }
+
+    try {
+      await this.storage.defineDriver(CordovaSQLiteDriver);
+      this.sqliteDriverDefined = true;
+    } catch (error) {
+      console.warn('SQLite driver could not be loaded, falling back to default storage', error);
+    }
+  }
 
   private async initStorage(): Promise<void> {
     if (!this._storage) {
+      await this.ensureSQLiteDriver();
       this._storage = await this.storage.create();
     }
   }

@@ -6,13 +6,19 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
 import { IonicStorageModule } from '@ionic/storage-angular';
-
+import { Drivers } from '@ionic/storage';
+import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    importProvidersFrom(IonicStorageModule.forRoot()),
+    importProvidersFrom(
+      IonicStorageModule.forRoot({
+        name: '__fastnotes_db',
+        driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage],
+      })
+    ),
   ],
 });
